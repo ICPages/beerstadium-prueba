@@ -10,22 +10,22 @@ const requests = [
 
     {
         league: 3,
-        season: 2026,
-        date: '2026-05-07',
+        season: 2025,
+        date: '2025-05-07',
         output: 'europa-league.json'
     },
 
     {
         league: 848,
-        season: 2026,
-        date: '2026-05-07',
+        season: 2025,
+        date: '2025-05-07',
         output: 'conference-league.json'
     },
 
     {
         league: 2,
-        season: 2026,
-        date: '2026-05-30',
+        season: 2025,
+        date: '2025-05-30',
         output: 'champions-league.json'
     }
 ];
@@ -40,6 +40,19 @@ async function fetchMatches(config) {
     });
 
     const data = await response.json();
+
+    // 🔥 VALIDACIÓN IMPORTANTE
+    if (!data.response || data.response.length === 0) {
+
+        console.log(`Sin partidos para ${config.output}`);
+
+        fs.writeFileSync(
+            `./data/${config.output}`,
+            JSON.stringify([], null, 2)
+        );
+
+        return;
+    }
 
     const optimized = data.response.map(match => ({
 
