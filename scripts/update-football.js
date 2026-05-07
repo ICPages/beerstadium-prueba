@@ -10,21 +10,21 @@ const requests = [
 
     {
         league: 3,
-        season: 2026,
+        season: 2025,
         date: '2026-05-07',
         output: 'europa-league.json'
     },
 
     {
         league: 848,
-        season: 2026,
+        season: 2025,
         date: '2026-05-07',
         output: 'conference-league.json'
     },
 
     {
         league: 2,
-        season: 2026,
+        season: 2025,
         date: '2026-05-30',
         output: 'champions-league.json'
     }
