@@ -11,21 +11,18 @@ const requests = [
     {
         league: 3,
         season: 2025,
-        date: '2026-05-07',
         output: 'europa-league.json'
     },
 
     {
         league: 848,
         season: 2025,
-        date: '2026-05-07',
         output: 'conference-league.json'
     },
 
     {
         league: 2,
         season: 2025,
-        date: '2026-05-30',
         output: 'champions-league.json'
     }
 ];
@@ -33,7 +30,7 @@ const requests = [
 async function fetchMatches(config) {
 
     const url =
-`https://v3.football.api-sports.io/fixtures?league=${config.league}&season=${config.season}&date=${config.date}`;
+`https://v3.football.api-sports.io/fixtures?league=${config.league}&season=${config.season}`;
 
     const response = await fetch(url, {
         headers
@@ -41,8 +38,18 @@ async function fetchMatches(config) {
 
     const data = await response.json();
 
+    const importantMatches = data.response.filter(match => {
+
+    const round = match.league.round || '';
+
+    return (
+        round.includes('Semi-finals') ||
+        round.includes('Final')
+    );
+});
+
     // 🔥 VALIDACIÓN IMPORTANTE
-    if (!data.response || data.response.length === 0) {
+    if (!importantMatches || importantMatches.length === 0) {
 
         console.log(`Sin partidos para ${config.output}`);
 
@@ -54,7 +61,7 @@ async function fetchMatches(config) {
         return;
     }
 
-    const optimized = data.response.map(match => ({
+    const optimized = importantMatches.map(match => ({
 
         league: match.league.name,
 
